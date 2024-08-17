@@ -5,9 +5,9 @@ from pymongo.server_api import ServerApi
 
 
 class Mongo:
-    def __init__(self, connection_string):
+    def __init__(self):
         # Create a new client and connect to the server
-        self.client = MongoClient(connection_string)
+        self.client = MongoClient("mongodb+srv://dorbilia:Db05982005@users.iqmkh.mongodb.net/?retryWrites=true&w=majority&appName=Users")
         self.db = self.client["Users"]
 
     def add_user(self, user_id, name, tel_number, email, address, balance):
@@ -26,13 +26,15 @@ class Mongo:
         except:
             return False
 
-    def add_credit_card(self, user_id, card_number, ccv):
+    def add_credit_card(self, user_id, card_number, ccv, frame):
         now = datetime.now()
         expiry = now.strftime(f"%m/{now.year + 4}")
         document = {
             "_id": card_number,
             "expirationDate": expiry,
             "ccv": ccv,
+            "frame": frame,
+            "used": 0
         }
         try:
             self.db[user_id].insert_one(document)
@@ -40,9 +42,8 @@ class Mongo:
         except:
             return False
 
-
-if __name__ == "__main__":
-    mongo = Mongo(
-        "mongodb+srv://dorbilia:Db05982005@users.iqmkh.mongodb.net/?retryWrites=true&w=majority&appName=Users")
-    mongo.add_user("dorbili", "Dorbili", 123456, "abc@a", "address", 0)
-    mongo.add_credit_card("dorbili", 123, 123)
+    def search_card(self, id, card_number, ccv, date):
+        result = self.db[id].find_one({"_id": card_number, "expirationDate": date, "ccv": ccv})
+        if result is not None:
+            return result
+        return {}
