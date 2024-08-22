@@ -46,7 +46,7 @@ class ATM_Login:
         self.ccv_entry = ctk.CTkEntry(master=self.app, width=50)
         self.ccv_entry.pack(pady=5)
         # Add a login button
-        login_button = ctk.CTkButton(master=self.app, text="Login", command=self.login)
+        login_button = ctk.CTkButton(master=self.app, text="Login", command=lambda :self.login())
         login_button.pack(pady=20)
 
         # def validate():

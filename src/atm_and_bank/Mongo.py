@@ -41,9 +41,12 @@ class Mongo:
         result = self.db[id].find_one(information_to_check)
         return result
 
+    def update_info(self, id, where_to_update, information_to_update):
+        update = self.db[id].update_one(where_to_update, {"$set": information_to_update})
+        return "'updatedExisting': True" in str(update)
 
 if __name__ == "__main__":
     mongo = Mongo()
-    # # print(mongo.add_user("12345678", "password", "name", "05412345", "email@mail", "address", 100))
-    # print(mongo.add_credit_card("12345678", 123456, 123, 123, 100))
-    print(mongo.search_info("12345678"))
+    print(mongo.add_user("987654321", "password", "name2", "05412345", "email@mail", "address", 200))
+    print(mongo.add_credit_card("987654321", 654321, 321, 321, 100))
+    # print(mongo.update_info("12345678", {"_id": 12345}, {"balance": 110}))
