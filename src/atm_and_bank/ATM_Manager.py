@@ -1,9 +1,8 @@
 import Mongo
-import ATM_Login
 from datetime import datetime
 
 
-class Run_ATM:
+class ATM_Manager:
     def __init__(self):
         self.mongo = Mongo.Mongo()
 
@@ -13,5 +12,7 @@ class Run_ATM:
         inputs_to_check = {"_id": int(credit_card),
                            "expirationDate": datetime.strptime(date_str, date_format),
                            "ccv": int(ccv)}
-        # print(inputs_to_check)
-        return self.mongo.search_card(id, inputs_to_check)
+        return [self.mongo.search_info(id), self.mongo.search_info(id, inputs_to_check)]
+        # first value - the user's details
+        # second value - the user's credit_card
+    def send_money(self,other_account):

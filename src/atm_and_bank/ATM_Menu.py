@@ -10,9 +10,12 @@ class ATM_Menu:
 
     def create_menu(self):
         # Set window size and title
-        self.app.geometry("500x400")
+        self.app.geometry("500x500")
         self.app.title("ATM Menu")
-        balance_label = ctk.CTkLabel(master=self.app, text=f"{self.user.get("balance")}$")
+        name_label = ctk.CTkLabel(master=self.app, text=f"Hello {self.user.get("name")}", font=("Arial", 24))
+        name_label.pack(pady=10)
+        balance_label = ctk.CTkLabel(master=self.app, text=f"Your balance: {self.user.get("balance")}$",font=("Arial", 20))
+        balance_label.pack(pady=5)
         title_label = ctk.CTkLabel(master=self.app, text="Choose Action", font=("Arial", 24))
         title_label.pack(pady=20)
 
@@ -21,7 +24,7 @@ class ATM_Menu:
 
         # Create a frame to hold the grid of buttons
         frame = ctk.CTkFrame(master=self.app)
-        frame.pack(pady=60)
+        frame.pack(pady=50)
 
         # Create the buttons and place them in a grid
         send_money_button = ctk.CTkButton(master=frame, text="Send Money", command=lambda: print("Send Money pressed"))
@@ -39,8 +42,13 @@ class ATM_Menu:
         get_cash_button.grid(row=1, column=1, padx=20, pady=20)
 
         # Create a disconnection button
-        exit_button = ctk.CTkButton(master=self.app, text="Exit", command=self.app.quit, fg_color="red",
+        exit_button = ctk.CTkButton(master=self.app, text="Exit", command=self.app.destroy, fg_color="red",
                                     hover_color="darkred")
         exit_button.pack()
         # Run the application
         self.app.mainloop()
+
+
+if __name__ == "__main__":
+    menu = ATM_Menu({"name": "abc", "balance": 100}, 122)
+    menu.create_menu()

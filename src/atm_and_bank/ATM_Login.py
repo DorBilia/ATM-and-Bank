@@ -1,11 +1,12 @@
 import customtkinter as ctk
-import Run_ATM
+import ATM_Manager
+import ATM_Menu
 
 
 class ATM_Login:
     # Initialize the CustomTkinter app
     def __init__(self):
-        self.ATM = Run_ATM.Run_ATM()
+        self.ATM = ATM_Manager.ATM_Manager()
         self.app = ctk.CTk()
 
     def create_login(self):
@@ -58,16 +59,23 @@ class ATM_Login:
         #         return "wrong year number"
         #     if not validators.between(int(month_entry.get()))
         # Run the application
+        self.wrong_input_label = ctk.CTkLabel(self.app, text="")
+        self.wrong_input_label.pack(pady=10)
 
         self.app.mainloop()
 
     def login(self):
-        if self.ATM.login(self.id_entry.get(), self.credit_card_entry.get(), self.ccv_entry.get(),
-                          self.month_entry.get(), self.year_entry.get()):
-            print("successfully logged in")
+        self.login_details = self.ATM.login(self.id_entry.get(), self.credit_card_entry.get(), self.ccv_entry.get(),
+                                                self.month_entry.get(), self.year_entry.get())
+        if self.login_details[1]:
+            self.login_successful()
         else:
-            wrong_input_label = ctk.CTkLabel(master=self.app, text="Wrong information provided", text_color="red")
-            wrong_input_label.pack()
+            self.wrong_input_label.configure(text="Wrong information provided", text_color="red")
+
+    def login_successful(self):
+        self.app.destroy()
+        menu = ATM_Menu.ATM_Menu(self.login_details[0], self.login_details[1])
+        menu.create_menu()
 
 
 if __name__ == "__main__":
